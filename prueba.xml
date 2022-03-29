@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<configuracion>
+ <listaCiudades>
+ <ciudad>
+ <nombre filas="valorEntero" columnas="valorEntero"> valorAlfanumerico </nombre>
+ <fila numero="valorEntero"> "********************" </fila>
+ <fila numero="valorEntero"> "*** **             *" </fila>
+ <fila numero="valorEntero"> "*** *****E*****C****" </fila>
+ <fila numero="valorEntero"> "*** ***** ***** ***R" </fila>
+
+ <unidadMilitar fila="valorEntero" columna="valorEntero"> valorEntero3 </unidadMilitar>
+
+ </ciudad>
+
+ </listaCiudades>
+ <robots>
+ <robot>
+ <nombre tipo="ChapinFighter" capacidad="valorEntero"> valorAlfanumerico </nombre>
+ </robot>
+ </robots>
+</configuracion>
