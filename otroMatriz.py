@@ -17,8 +17,8 @@ class nodoInterno():
 class MatrizDispersa():
     def __init__(self,capa) : #Inicializar la matriz
         self.capa = capa
-        self.filas = ListaEncabezado("Fila") #Listas de encabezados x y y
-        self.columnas = ListaEncabezado("Columna")
+        self.filas = ListaEncabezado("fila") #Listas de encabezados x y y
+        self.columnas = ListaEncabezado("columna")
 
     def insertar (self,x,y,letra):
         new = nodoInterno(x,y,letra)
@@ -33,61 +33,63 @@ class MatrizDispersa():
             nodoy = nodo(y)
             self.columnas.InsertarEncabezado(nodoy)
         
-        #Integrar fila
-        if nodox.acceso ==None: ## Verificar la posicion que le corresponse o que no este ocupado
-            nodox.acceso == new
-        else:
-            if new.y < nodox.acceso.y:
-               new.derecha = nodox.acceso 
-               nodox.acceso.izquierda = new
-               nodox.acceso =new
+        if nodox.acceso == None: # -- comprobamos que el nodox no esta apuntando hacia ningun nodoInterno
+            nodox.acceso = new
+        else: # -- si esta apuntando, validamos si la posicion de la columna del new nodoInterno es menor a la posicion de la columna del acceso 
+            if new.y < nodox.acceso.y: # F1 --->  NI 1,1     NI 1,3
+                new.derecha = nodox.acceso              
+                nodox.acceso.izquierda = new
+                nodox.acceso = new
             else:
-                temp:nodoInterno = nodox.acceso
-                while temp != None:
-                    print("bucle")
-                    if new.y < temp.y:
-                        new.derecha = temp
-                        new.izquierda = temp.izquierda
-                        temp.izquierda.derecha = new
-                        temp.izquierda = new
-                        break
-                    elif new.x == temp.x and new.y == temp.y:
-                        break
+                #de no cumplirse debemos movernos de izquierda a derecha buscando donde posicionar el new nodoInterno
+                tmp : nodoInterno = nodox.acceso     # nodox:F1 --->      NI 1,2; NI 1,3; NI 1,5;
+                while tmp != None:                      #NI 1,6
+                    if new.y < tmp.y:
+                        new.derecha = tmp
+                        new.izquierda = tmp.izquierda
+                        tmp.izquierda.derecha = new
+                        tmp.izquierda = new
+                        break;
+                    elif new.x == tmp.x and new.y == tmp.y: #validamos que no haya repetidas
+                        break;
                     else:
-                        if temp.derecha == None:
-                            temp.derecha = new
-                            new.izquierda = temp
-                            break
+                        if tmp.derecha == None:
+                            tmp.derecha = new
+                            new.izquierda = tmp
+                            break;
                         else:
-                            temp = temp.derecha  #Recorrer
+                            tmp = tmp.derecha 
+                             #         nodoy:        C1    C3      C5      C6
+                             # nodox:F1 --->      NI 1,2; NI 1,3; NI 1,5; NI 1,6;
+                             # nodox:F2 --->      NI 2,2; NI 2,3; NI 2,5; NI 2,6;
 
-    #INTEGRAR EN COLUMNA
-        if nodoy.acceso == None: #Comprobar que el nodo y no esta apuntando a alguna nodocelda
+        # ----- INSERTAR new EN COLUMNA
+        if nodoy.acceso == None:  # -- comprobamos que el nodoy no esta apuntando hacia ningun nodoCelda
             nodoy.acceso = new
-        else:
+        else: # -- si esta apuntando, validamos si la posicion de la fila del new nodoCelda es menor a la posicion de la fila del acceso 
             if new.x < nodoy.acceso.x:
-                new.abajo= nodoy.acceso
+                new.abajo = nodoy.acceso
                 nodoy.acceso.arriba = new
                 nodoy.acceso = new
             else:
-                temp2 : nodoInterno = nodoy.acceso
-                while temp2 != None:
-                    print("bucle0")
-                    if new.x < temp2.x:
-                        new.abajo = temp2
-                        new.arriba = temp2.arriba
-                        temp2.arriba.abajo = new
-                        temp2.arriba = new
+                # de no cumplirse, debemos movernos de arriba hacia abajo buscando donde posicionar el new
+                tmp2 : nodoInterno = nodoy.acceso
+                while tmp2 != None:
+                    if new.x < tmp2.x:
+                        new.abajo = tmp2
+                        new.arriba = tmp2.arriba
+                        tmp2.arriba.abajo = new
+                        tmp2.arriba = new
                         break;
-                    elif new.x == temp2.x and new.y == temp2.y:
-                        break
+                    elif new.x == tmp2.x and new.y == tmp2.y: #validamos que no haya repetidas
+                        break;
                     else:
-                        if temp2.abajo == None:
-                            temp2.abajo = new
-                            new.arriba = temp2
+                        if tmp2.abajo == None:
+                            tmp2.abajo = new
+                            new.arriba = tmp2
                             break
                         else:
-                            temp2 = temp2.abajo
+                            tmp2 = tmp2.abajo
 
         # TERMINA LA ISERCION DE NODOS
     

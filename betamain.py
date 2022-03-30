@@ -1,4 +1,4 @@
-from otroMatriz import MatrizDispersa
+from OtroMatriz2 import MatrizDispersa
 
 matriz =MatrizDispersa(0)
 
@@ -13,7 +13,7 @@ def insertaTodo():
             for col in columnas:
                 if col != '\n':
                     c+=1
-                    matriz.insertar(l,c,col)
+                    matriz.insert(l,c,col)
             c=0
         matriz.graficarDibujo('toad')
 

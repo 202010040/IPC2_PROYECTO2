@@ -8,11 +8,13 @@ class ListaEncabezado:
     def InsertarEncabezado(self,nuevo):
         self.size += 1 #Agranda la lista en uno
         if self.primero == None: #Verifica si la lista esta vacia
-            self.primero = self.ultimo = nuevo #Inserta un nuevo elemento
+            self.primero = nuevo
+            self.ultimo = nuevo #Inserta un nuevo elemento
         else:
             if nuevo.id < self.primero.id : #Revisa la posicion
                 nuevo.siguiente = self.primero
-                self.primero.anterior = nuevo #Inserta al principio
+                self.primero.anterior = nuevo 
+                self.primero = nuevo#Inserta al principio
             elif nuevo.id > self.ultimo.id :
                 self.ultimo.siguiente = nuevo #Inserta al final
                 nuevo.anterior = self.ultimo
@@ -42,8 +44,9 @@ class ListaEncabezado:
         while temp != None:
             if id == temp.id:
                 return (temp)
-            else:
-                temp = temp.siguiente
+            temp = temp.siguiente
+        return None
+               
             
     
     
