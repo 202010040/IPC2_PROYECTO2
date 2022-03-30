@@ -207,13 +207,13 @@ fontsize="25pt"
 	node[label="*" fillcolor="black" pos="6,-2!" shape=box]i3_7;
 	node[label="*" fillcolor="black" pos="7,-2!" shape=box]i3_8;
 	node[label="*" fillcolor="black" pos="8,-2!" shape=box]i3_9;
-	node[label=" " fillcolor="white" pos="9,-2!" shape=box]i3_10;
+	node[label=" " fillcolor="green" pos="9,-2!" shape=box]i3_10;
 	node[label="*" fillcolor="black" pos="10,-2!" shape=box]i3_11;
 	node[label="*" fillcolor="black" pos="11,-2!" shape=box]i3_12;
 	node[label="*" fillcolor="black" pos="12,-2!" shape=box]i3_13;
 	node[label="*" fillcolor="black" pos="13,-2!" shape=box]i3_14;
 	node[label="*" fillcolor="black" pos="14,-2!" shape=box]i3_15;
-	node[label=" " fillcolor="yellow" pos="15,-2!" shape=box]i3_16;
+	node[label=" " fillcolor="blue" pos="15,-2!" shape=box]i3_16;
 	node[label="*" fillcolor="black" pos="16,-2!" shape=box]i3_17;
 	node[label="*" fillcolor="black" pos="17,-2!" shape=box]i3_18;
 	node[label="*" fillcolor="black" pos="18,-2!" shape=box]i3_19;

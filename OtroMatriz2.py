@@ -139,7 +139,7 @@ class MatrizDispersa():
                     contenido += '\n\tnode[label="*" fillcolor="black" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
                 elif pivote_celda.caracter == " ":
                     contenido += '\n\tnode[label=" " fillcolor="white" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y) 
-                elif pivote_celda.caracter == "E":
+                elif pivote_celda.caracter == "E" or pivote_celda.caracter == "e" :
                     contenido += '\n\tnode[label=" " fillcolor="green" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
                 elif pivote_celda.caracter == "R":
                     contenido += '\n\tnode[label=" " fillcolor="gray" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
@@ -219,16 +219,18 @@ class MatrizDispersa():
                 return True
 
 
-    def buscarCivil (self,x,y, entradax, entraday):
+    def buscarCivil (self,x,y, entradax, entraday, entrada2x,entrada2y):
+        x2 = x
+        y2 = y
         civil = self.busqueda(x,y)
         entrada = self.busqueda(entradax,entraday)
+
         if civil == None or entrada == None: # Existe algun Civil?
             print("no existe")
 
         elif entrada != None:
 
             dron = entrada
-
             while (dron.x == civil.x and dron.y == civil.y) == False: #CUANDO EL DRON NO HAYA LLEGADO A LAS COORDENADAS DE CIVIL
                 
                 dron1 = dron.arriba #Obtiene las posiciones de los nodos aledaños
@@ -240,7 +242,7 @@ class MatrizDispersa():
                 atorada = self.Pasable(dron1) ==self.Pasable(dron2) == self.Pasable(dron3)==self.Pasable(dron4)== False
                 if atorada == True:
                     dron.atorada = True
-                    dron.caracter = " "
+                    dron.caracter = " " #Si se atora se vueleve una celda en blanco
                     print ("atorada")
                     return None
 
@@ -248,25 +250,33 @@ class MatrizDispersa():
                     if self.Pasable(dron1) == True:  #Revisa si se puede pasar
                         dron1.recorrida += 1
                         dron1.caracter = "Y" #Marcar como recorrido den el grafico
-                        self.buscarCivil(x,y,dron1.x,dron1.y) #Avanzar
-
+                        self.buscarCivil(x,y,dron1.x,dron1.y,entrada2x,entrada2y) #Avanzar
+#------------------------SI ARRIBA, NO SE PUEDE MOVER ENTONCES ABAJO, SI ABAJO NO SE PUEDE, ENTONCES IZQUIERDA....---------------------
                     elif self.Pasable(dron2) == True:  #Revisa si se puede pasar
                         dron2.recorrida += 1
                         dron2.caracter = "Y" #Marcar como recorrido den el grafico
-                        self.buscarCivil(x,y,dron2.x,dron2.y) #Avanzar
+                        self.buscarCivil(x,y,dron2.x,dron2.y,entrada2x,entrada2y) #Avanzar
 
                     elif self.Pasable(dron3) == True:  #Revisa si se puede pasar
                         dron3.recorrida += 1
                         dron3.caracter = "Y" #Marcar como recorrido den el grafico
-                        self.buscarCivil(x,y,dron3.x,dron3.y) #Avanzar
+                        self.buscarCivil(x,y,dron3.x,dron3.y,entrada2x,entrada2y) #Avanzar
 
                     elif self.Pasable(dron4) == True:  #Revisa si se puede pasar
                         dron4.recorrida += 1
                         dron4.caracter = "Y" #Marcar como recorrido den el grafico
-                        self.buscarCivil(x,y,dron4.x,dron4.y) #Avanzar    
+                        self.buscarCivil(x,y,dron4.x,dron4.y,entrada2x,entrada2y) #Avanzar    
                     else:
                         print ("No pasable")
                         return
-
-            self.graficarDibujo("Prueba")
+            
+            if((dron.x == civil.x and dron.y == civil.y) == True):#Ya con el problema resuelto, podemos pasar
+                self.busqueda(x2,y2).caracter ="C"
+                self.busqueda(entrada2x,entrada2y).caracter = "E" #Pone los mismos 2 veces para crear un backup del punto de entrada
+                print(entrada.y)
+                self.graficarDibujo("Prueba")
+                return None
+    
+    
+                
                 
