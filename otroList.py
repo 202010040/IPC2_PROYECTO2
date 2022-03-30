@@ -47,6 +47,6 @@ class ListaEncabezado:
             temp = temp.siguiente
         return None
                
-            
-    
-    
+class ListaArboles:
+    def __init__(self):
+        pass #ESO NO SE USA

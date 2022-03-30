@@ -14,8 +14,8 @@ def insertaTodo():
                 if col != '\n':
                     c+=1
                     matriz.insert(l,c,col)
-            c=0
-        matriz.graficarDibujo('toad')
+            c=0 #arreglar con una lista de listas de letras
+        matriz.buscarCivil(3,16,3,10)
 
 def insertaSeleccion():
     with open('Figura.txt') as archivo:

@@ -12,6 +12,8 @@ class Nodo_Interno():
         self.abajo = None
         self.derecha = None 
         self.izquierda = None  
+        self.recorrida = 0
+        self.atorada = False
 
 class MatrizDispersa():
     def __init__(self, capa):
@@ -143,8 +145,8 @@ class MatrizDispersa():
                     contenido += '\n\tnode[label=" " fillcolor="gray" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
                 elif pivote_celda.caracter == "C":
                     contenido += '\n\tnode[label=" " fillcolor="blue" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
-                #elif pivote_celda.caracter == "E":
-                #    contenido += '\n\tnode[label=" " fillcolor="white" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
+                elif pivote_celda.caracter == "Y":
+                    contenido += '\n\tnode[label=" " fillcolor="yellow" pos="{},-{}!" shape=box]i{}_{};'.format(posy_celda, posx, pivote_celda.x, pivote_celda.y)
 
                 pivote_celda = pivote_celda.derecha
             
@@ -184,3 +186,87 @@ class MatrizDispersa():
         print("Listo")
         os.system("neato -Tpdf " + dot + " -o " + result)
         webbrowser.open(result)
+
+ #------------------------------ BUSCAR Y RECORRER----------------------------------
+
+    def busqueda (self,x,y):
+        temp:Nodo_Interno = self.filas.primero.acceso #Guarda un temporal
+        if temp == None: # Ver si esta vacia
+            print ("vacia")
+        else:
+            while temp.derecha != None: #MIENTRAS HAYA OTRA COLUMNA
+                temp2 = temp #Guardo el encabezado de fila
+                while temp.abajo != None:# MIENTRAS HAYA OTRA FILA
+                    if temp.x == x and temp.y == y: #VALIDA LAS COORDENADAS X Y Y
+                        return (temp)
+                        break
+                    else:
+                        temp = temp.abajo #avanza en fila 
+                temp = temp2.derecha#Avanza en columna
+            return None # Si no se haya nada, se retorna vacio
+
+
+    def Pasable (self,dron):
+        if dron == None: # Ver si esta vacia
+            print("Vacia")
+            return False
+        else: #Si no esta vacia se verifica si es pasable
+            c1 = dron.caracter== "*" or dron.caracter == "M" or dron.caracter == "R" or dron.recorrida >= 2#Valida si es pasable o no
+            if c1 == True:
+                print("no pasable" ,dron.x,dron.y)
+                return False
+            else:
+                return True
+
+
+    def buscarCivil (self,x,y, entradax, entraday):
+        civil = self.busqueda(x,y)
+        entrada = self.busqueda(entradax,entraday)
+        if civil == None or entrada == None: # Existe algun Civil?
+            print("no existe")
+
+        elif entrada != None:
+
+            dron = entrada
+
+            while (dron.x == civil.x and dron.y == civil.y) == False: #CUANDO EL DRON NO HAYA LLEGADO A LAS COORDENADAS DE CIVIL
+                
+                dron1 = dron.arriba #Obtiene las posiciones de los nodos aledaños
+                dron2 = dron.abajo
+                dron3 = dron.izquierda
+                dron4 = dron.derecha
+
+                #ESTA ATORADA SI YA NO HAY SALIDA
+                atorada = self.Pasable(dron1) ==self.Pasable(dron2) == self.Pasable(dron3)==self.Pasable(dron4)== False
+                if atorada == True:
+                    dron.atorada = True
+                    dron.caracter = " "
+                    print ("atorada")
+                    return None
+
+                if dron.atorada == False: # solo puede avanzar si no se atora
+                    if self.Pasable(dron1) == True:  #Revisa si se puede pasar
+                        dron1.recorrida += 1
+                        dron1.caracter = "Y" #Marcar como recorrido den el grafico
+                        self.buscarCivil(x,y,dron1.x,dron1.y) #Avanzar
+
+                    elif self.Pasable(dron2) == True:  #Revisa si se puede pasar
+                        dron2.recorrida += 1
+                        dron2.caracter = "Y" #Marcar como recorrido den el grafico
+                        self.buscarCivil(x,y,dron2.x,dron2.y) #Avanzar
+
+                    elif self.Pasable(dron3) == True:  #Revisa si se puede pasar
+                        dron3.recorrida += 1
+                        dron3.caracter = "Y" #Marcar como recorrido den el grafico
+                        self.buscarCivil(x,y,dron3.x,dron3.y) #Avanzar
+
+                    elif self.Pasable(dron4) == True:  #Revisa si se puede pasar
+                        dron4.recorrida += 1
+                        dron4.caracter = "Y" #Marcar como recorrido den el grafico
+                        self.buscarCivil(x,y,dron4.x,dron4.y) #Avanzar    
+                    else:
+                        print ("No pasable")
+                        return
+
+            self.graficarDibujo("Prueba")
+                
